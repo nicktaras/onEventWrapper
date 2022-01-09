@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <button onclick="myLib.triggerEvtA()">A</button>
+    <button onclick="myLib.triggerEvtB()">B</button>
+
+    <script>
+
+        var myLib = {
+            triggerEvtA: (event) => {
+                myLib.on("tokens", { tokens: '10' });
+            },
+            triggerEvtB: (event) => {
+                myLib.on("proof", { proof: 12345 });
+            },
+            on: (evt, data) => {
+                if(evt === "tokens") {
+                    console.log('here are your tokens: ', data);
+                }
+                if(evt === "proof") {
+                    console.log('here is your proof: ', data);
+                }
+            }
+        }
+
+        var connect = new myLib();
+        
+        connect.on("tokens", (data) => {
+            console.log('connected');
+        });
+
+        connect.on("proof", (data) => {
+            console.log('disconnected');
+        });
+
+    </script>
+
+</body>
+</html>
