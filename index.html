@@ -8,37 +8,64 @@
 </head>
 <body>
     
-    <button onclick="myLib.triggerEvtA()">A</button>
-    <button onclick="myLib.triggerEvtB()">B</button>
-
     <script>
 
-        var myLib = {
-            triggerEvtA: (event) => {
-                myLib.on("tokens", { tokens: '10' });
-            },
-            triggerEvtB: (event) => {
-                myLib.on("proof", { proof: 12345 });
-            },
-            on: (evt, data) => {
-                if(evt === "tokens") {
-                    console.log('here are your tokens: ', data);
+        class myLib {
+            
+            constructor() {
+
+                this.callbacks = {};
+
+                setTimeout(() => {
+                    this.triggerEvtA();
+                    this.triggerEvtB();
+                }, 2000);
+
+            };
+
+            triggerEvtA = () => {
+
+                this.on("tokens", null, { hi: 1 });
+
+            };
+
+            triggerEvtB = () => {
+
+                this.on("proof", null, { hi: 100 });
+
+            };
+
+            on(type, callback, data) {
+
+                if (callback) {
+
+                    this.callbacks[type] = callback;
+
+                } else {
+
+                    if(type === "tokens") {
+
+                        return this.callbacks[type].call("tokens", data);
+
+                    }
+
+                    if(type === "proof") {
+
+                        return this.callbacks[type].call("proof", data);
+
+                    }
+
                 }
-                if(evt === "proof") {
-                    console.log('here is your proof: ', data);
-                }
-            }
+
+            };
+
         }
 
         var connect = new myLib();
-        
-        connect.on("tokens", (data) => {
-            console.log('connected');
-        });
 
-        connect.on("proof", (data) => {
-            console.log('disconnected');
-        });
+        connect.on("tokens", (tokens) => { console.log('tokens: ', tokens); });
+
+        connect.on("proof", (proof) => { console.log('proof: ', proof); });
 
     </script>
 
